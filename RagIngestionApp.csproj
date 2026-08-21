@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>RagIngestionApp</RootNamespace>
+    <AssemblyName>RagIngestionApp</AssemblyName>
+  </PropertyGroup>
+
+  <!--
+    Package versions are pinned to known-compatible releases.
+
+    ⚠  Do NOT add "OpenAI" as an explicit PackageReference.
+       Azure.AI.OpenAI owns the OpenAI transitive dependency.
+       Pinning a separate OpenAI version causes MissingMethodException
+       at runtime because the Azure wrapper was compiled against a
+       specific internal API surface.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Azure.AI.DocumentIntelligence" Version="1.0.0"  />
+    <PackageReference Include="Azure.AI.OpenAI"               Version="2.1.0"  />
+    <PackageReference Include="Azure.Identity"                Version="1.13.2" />
+    <PackageReference Include="Azure.Search.Documents"         Version="11.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration"                      Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json"                 Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
+  </ItemGroup>
+
+  <!-- Copy appsettings.json to the output directory on every build. -->
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- Copy PDFs so Documents/ is available next to the compiled executable. -->
+  <ItemGroup>
+    <None Update="Documents\*.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
